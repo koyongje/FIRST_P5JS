@@ -10,7 +10,7 @@ const udpPort = new osc.UDPPort({
   remotePort: 7799,
 });
 
-udpPort.open();
+udpPort.open();dddafdsfsafds//
 
 console.log("connecting...");
 udpPort.on("message", function (oscMessage) {
