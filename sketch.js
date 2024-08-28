@@ -38,6 +38,18 @@ function reRoadImage() {
 
 function setup() {
 
+//  Set up OSC client configuration
+  const config = {
+    udpClient: {
+      host: '127.0.0.1',  // IP address of the OSC server
+      port: 7799         // Port the OSC server is listening on
+    }
+  };
+
+  // Initialize OSC client
+  osc = new OSC({ plugin: new OSC.DatagramPlugin(config) });
+
+   console.log('iniiiiting client  ');
     fullscreen( true );
     createCanvas(windowWidth, windowHeight); // Set the canvas to window size
     reRoadImage();
@@ -51,12 +63,12 @@ function setup() {
         gloria[imagePosition].resize(windowWidth, windowHeight );
     }
 
-    socket = new WebSocket('ws://localhost:8081');
+    // socket = new WebSocket('ws://localhost:8081');
 
-    socket.onmessage = function(event) {
-      let oscMessage = JSON.parse(event.data);
-      console.log("Received OSC message:", oscMessage);
-    };    
+    // socket.onmessage = function(event) {
+    //   let oscMessage = JSON.parse(event.data);
+    //   console.log("Received OSC message:", oscMessage);
+    // };    
   //noLoop();
 
 }
