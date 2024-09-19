@@ -5,7 +5,7 @@
 let points = [];
 
 let delaunay, voronoi;
-
+      
 let gloria = [];
 
 let imagePosition = 0;
