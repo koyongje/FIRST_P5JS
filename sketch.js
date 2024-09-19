@@ -5,7 +5,7 @@
 let points = [];
 
 let delaunay, voronoi;
-      
+
 let gloria = [];
 
 let imagePosition = 0;
@@ -38,16 +38,10 @@ function reRoadImage() {
 
 function setup() {
 
-//  Set up OSC client configuration
-  const config = {
-    udpClient: {
-      host: '127.0.0.1',  // IP address of the OSC server
-      port: 7799         // Port the OSC server is listening on
-    }
-  };
 
-  // Initialize OSC client
-  osc = new OSC({ plugin: new OSC.DatagramPlugin(config) });
+
+
+
 
    console.log('iniiiiting client  ');
     fullscreen( true );
@@ -63,13 +57,15 @@ function setup() {
         gloria[imagePosition].resize(windowWidth, windowHeight );
     }
 
-    // socket = new WebSocket('ws://localhost:8081');
+    socket = new WebSocket('ws://localhost:8081');
 
-    // socket.onmessage = function(event) {
-    //   let oscMessage = JSON.parse(event.data);
-    //   console.log("Received OSC message:", oscMessage);
-    // };    
-  //noLoop();
+    // Listen for messages from the WebSocket server
+    socket.onmessage = function(event) {
+      let oscMessage = JSON.parse(event.data);
+      console.log("Received OSC message:", oscMessage);
+      // Handle the OSC message and update your sketch accordingly
+      handleOscMessage(oscMessage);
+    };
 
 }
 
@@ -145,7 +141,7 @@ function calculateDelaunay(points) {
   return new d3.Delaunay(pointsArray);
 }
 
-
+//
 function keyPressed() {
 //    let fs = fullscreen();
 //    fullscreen(!fs);
@@ -166,4 +162,15 @@ function keyPressed() {
         if (random(100) > brightness(col)) 
         points.push(createVector(x, y));  
      }
+}
+
+
+function handleOscMessage(oscMessage) {
+  // Example: Draw a circle at the position specified in the OSC message
+  if (oscMessage.address === "/data") {
+    let x = oscMessage.args[0];
+    let y = oscMessage.args[1];
+    let size = oscMessage.args[2];
+    ellipse(x, y, size, size);
+  }
 }
